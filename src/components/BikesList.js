@@ -22,7 +22,11 @@ export default function BikesList(props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredBikes, setFilteredBikes] = useState(bikes);
 
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
   useEffect(() => {
+    if ((startDate === null && endDate === null)) {
     setLoading(true);
     axios
       .get(
@@ -32,8 +36,9 @@ export default function BikesList(props) {
         console.log(res.data.incidents);
         setBikes(res.data.incidents);
         setLoading(false);
-      });
-  }, []);
+      })
+    };
+  }, [startDate, endDate]);
 
   // Filter on search
   const handleChange = e => {
@@ -47,6 +52,25 @@ export default function BikesList(props) {
     );
     setFilteredBikes(results);
   }, [searchTerm, bikes]);
+
+  // Set startDate
+const handleStartDateChange = date => {
+  return setStartDate(date);
+}
+
+  // Set endDate
+  const handleEndDateChange = date => {
+  return setEndDate(date);
+}
+
+// Filter on dates
+const filterDates = () => {
+  const unixStartDate = Date.parse(startDate)/1000;
+  const unixEndDate = Date.parse(endDate)/1000;
+  const results = bikes.filter(bike => bike.occurred_at >= unixStartDate && bike.occurred_at <= unixEndDate);
+  setFilteredBikes(results);
+}
+
 
   // Get current posts
   const indexOfLastPost = currentPage * 10;
@@ -63,7 +87,14 @@ export default function BikesList(props) {
       ) : (
         <>
           <p>Total: {filteredBikes.length}</p>
-          <FilterBar handleChange = {handleChange}/>
+          <FilterBar
+           handleChange = {handleChange}
+           handleStartDateChange={handleStartDateChange}
+           handleEndDateChange={handleEndDateChange}
+           startDate={startDate}
+           endDate={endDate}
+           handleClick={filterDates}
+           />
           <BikesContainer>
             {currentBikes.map((bike) => {
               return (
