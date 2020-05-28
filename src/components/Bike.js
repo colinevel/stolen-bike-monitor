@@ -5,13 +5,13 @@ const BikeItem = styled.div`
 display: flex;
 flex-direction row;
 flex-wrap: wrap;
-justify-content: space-between;
+justify-content: start;
 align-items: center;
-border: 1px solid black;
 border-radius: 10px;
 margin: 3vh auto;
-width: 90vw;
+width: 100%;
 min-height: 30vh;
+box-shadow: 8px 8px 15px 1px rgba(0, 150, 136, .5);
 `;
 
 const BikeImg = styled.img`
@@ -21,12 +21,14 @@ margin-left: 2vw;
 `;
 
 const BikeInfos = styled.div`
-width: 70vw;
-height: 30vh;
 display: flex;
+flex-wrap: wrap;
+max-width: 60vw;
+min-height: 20vh;
 flex-direction: column;
-justify-content: center;
+justify-content: space-around;
 text-align: left;
+margin-left: 5vw;
 `;
 
 export default function Bike(props) {
@@ -45,8 +47,8 @@ export default function Bike(props) {
         <h2>{props.title}</h2>
         <p>{props.description}</p>
         <p>{props.address}</p>
-        <p>Date of Theft: {theftDate}</p>
-        <p>Date of reported Theft: {reportedDate}</p>
+        <p>Stolen on: {theftDate}</p>
+        <p>Reported on: {reportedDate}</p>
       </BikeInfos>
     </BikeItem>
     </>
