@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
+import "./pagination.css";
 
 
 const PaginationContainer = styled.ul`
@@ -9,7 +11,7 @@ const PaginationContainer = styled.ul`
 `;
 
 const NumberLi = styled.li`
-    margin: 3px;
+    margin: auto 10px;
 `;
 
 const Pagination = (props) => {
@@ -22,19 +24,12 @@ const Pagination = (props) => {
   return (
     <nav>
       <PaginationContainer>
-        {/* <li>
-            <a onClick={() => props.paginate(1)} href={1}>First Page</a>
-        </li> */}
         {pageNumbers.map((number) => (
-          <NumberLi key={number}>
-            <a onClick={() => props.paginate(number)} href="!#">
-              {number}
-            </a>
+          <NumberLi
+          key={number}>
+            <NavLink exact to={`/index/${number}`} onClick={() => props.paginate(number)}>{number}</NavLink>
           </NumberLi>
         ))}
-        {/* <li>
-            <a href={5}>Last Page</a>
-        </li> */}
       </PaginationContainer>
     </nav>
   );

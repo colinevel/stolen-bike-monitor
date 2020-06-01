@@ -4,6 +4,8 @@ import Bike from "./Bike";
 import styled from "styled-components";
 import Pagination from "./Pagination";
 import FilterBar from "./FilterBar";
+import NoResults from "./NoResults";
+import Loading from "./Loading";
 
 const BikesContainer = styled.ul`
   display: flex;
@@ -24,6 +26,7 @@ export default function BikesList(props) {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  // Display all bikes when the page first loads and when the dates are cleared
   useEffect(() => {
     if (startDate === null && endDate === null) {
       setLoading(true);
@@ -39,9 +42,19 @@ export default function BikesList(props) {
     }
   }, [startDate, endDate]);
 
-  // Filter on search
+  // Handle change on search input
   const handleChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  // Set the state for start date
+  const handleStartDateChange = (date) => {
+    return setStartDate(date);
+  };
+
+  // Set the state for end date
+  const handleEndDateChange = (date) => {
+    return setEndDate(date);
   };
 
   // Filter on bikes
@@ -52,15 +65,13 @@ export default function BikesList(props) {
     setFilteredBikes(results);
   }, [searchTerm, bikes]);
 
-  // Set startDate
-  const handleStartDateChange = (date) => {
-    return setStartDate(date);
-  };
-
-  // Set endDate
-  const handleEndDateChange = (date) => {
-    return setEndDate(date);
-  };
+  // Search filter
+  // const searchFilter = () => {
+  //   const results = bikes.filter((bike) =>
+  //     bike.title.toLowerCase().match(searchTerm)
+  //   );
+  //   setFilteredBikes(results);
+  // }
 
   // Filter on dates
   const filterDates = () => {
@@ -73,7 +84,22 @@ export default function BikesList(props) {
     setFilteredBikes(results);
   };
 
-  // Get current posts
+  // const filteredBikes = () => {
+  //   return bikes.filter(b => {
+  //     if (searchTerm.length=== 0) {
+  //       return filterDates();
+  //     }
+  //     if (startDate === null && endDate === null){
+  //       return searchFilter();
+  //     }
+  //     else {
+
+  //     }
+  //   })
+
+  // }
+
+  // Get current bikes
   const indexOfLastPost = currentPage * 10;
   const indexOfFirstPost = indexOfLastPost - 10;
   const currentBikes = filteredBikes.slice(indexOfFirstPost, indexOfLastPost);
@@ -83,33 +109,47 @@ export default function BikesList(props) {
 
   return (
     <>
+      <FilterBar
+        handleChange={handleChange}
+        handleStartDateChange={handleStartDateChange}
+        handleEndDateChange={handleEndDateChange}
+        startDate={startDate}
+        endDate={endDate}
+        handleClick={filterDates}
+      />
       {loading ? (
-        <p>loading...</p>
+        <Loading />
       ) : (
         <>
-          <FilterBar
-            handleChange={handleChange}
-            handleStartDateChange={handleStartDateChange}
-            handleEndDateChange={handleEndDateChange}
-            startDate={startDate}
-            endDate={endDate}
-            handleClick={filterDates}
-          />
-          <p style={{display:"flex", justifyContent:"flex-end", color:"rgb(0, 150, 136)", fontWeight: "bold", fontSize: "1.4rem"}}>Total: {filteredBikes.length}</p>
+          <p
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              color: "rgb(0, 150, 136)",
+              fontWeight: "bold",
+              fontSize: "1.4rem",
+            }}
+          >
+            Total: {filteredBikes.length}
+          </p>
           <BikesContainer>
-            {currentBikes.map((bike) => {
-              return (
-                <Bike
-                  key={bike.id}
-                  title={bike.title}
-                  description={bike.description}
-                  image={bike.media.image_url_thumb}
-                  address={bike.address}
-                  theftDate={bike.occurred_at}
-                  reportedDate={bike.updated_at}
-                />
-              );
-            })}
+            {currentBikes.length === 0 ? (
+              <NoResults />
+            ) : (
+              currentBikes.map((bike) => {
+                return (
+                  <Bike
+                    key={bike.id}
+                    title={bike.title}
+                    description={bike.description}
+                    image={bike.media.image_url_thumb}
+                    address={bike.address}
+                    theftDate={bike.occurred_at}
+                    reportedDate={bike.updated_at}
+                  />
+                );
+              })
+            )}
           </BikesContainer>
           <Pagination
             totalBikes={filteredBikes.length}

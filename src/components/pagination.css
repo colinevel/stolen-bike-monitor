@@ -1,0 +1,10 @@
+nav ul li a {
+ text-decoration: none;
+ font-size: 1.2rem;
+ font-weight: bold;
+ color: black;
+}
+
+nav ul li a.active {
+    color: rgb(0, 150, 136);
+}
