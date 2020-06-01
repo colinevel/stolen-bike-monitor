@@ -155,6 +155,7 @@ export default function BikesList(props) {
             totalBikes={filteredBikes.length}
             bikesPerPage={10}
             paginate={paginate}
+            currentPage={currentPage}
           />
         </>
       )}
