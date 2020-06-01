@@ -21,11 +21,18 @@ const Pagination = (props) => {
     pageNumbers.push(i);
   }
 
+  // pagination buttons conditions
+  let prevStyles, nextStyles;
+  props.currentPage === 1? prevStyles = "navItem-Prev hidden" : prevStyles = "navItem-Prev";
+  props.currentPage === pageNumbers.length? nextStyles = "navItem-Next hidden" : nextStyles = "navItem-Next";
+
+
   return (
+
     <nav>
       <PaginationContainer>
       <Link
-          className="navItem-Prev-Next"
+          className={prevStyles}
           exact
           to={`/index/1`}
           onClick={() => props.paginate(1)}
@@ -33,7 +40,7 @@ const Pagination = (props) => {
           First
         </Link>
         <Link
-          className="navItem-Prev-Next"
+          className={prevStyles}
           exact
           to={`/index/${props.currentPage - 1}`}
           onClick={() => props.paginate(props.currentPage - 1)}
@@ -52,7 +59,7 @@ const Pagination = (props) => {
           </NumberLi>
         ))}
         <Link
-          className="navItem-Prev-Next"
+          className={nextStyles}
           exact
           to={`/index/${props.currentPage + 1}`}
           onClick={() => props.paginate(props.currentPage + 1)}
@@ -60,7 +67,7 @@ const Pagination = (props) => {
           Next
         </Link>
         <Link
-          className="navItem-Prev-Next"
+          className={nextStyles}
           exact
           to={`/index/${pageNumbers.length}`}
           onClick={() => props.paginate(pageNumbers.length)}

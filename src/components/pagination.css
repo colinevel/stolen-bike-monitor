@@ -1,8 +1,19 @@
-.navItem-Prev-Next {
+.navItem-Prev {
     width: 5vw;
     text-decoration: none;
     color: black;
     padding: 0.5rem 0.5rem;
+}
+
+.navItem-Next {
+    width: 5vw;
+    text-decoration: none;
+    color: black;
+    padding: 0.5rem 0.5rem;
+}
+
+.hidden{
+    display: none;
 }
 
 .navItem-Prev-Next:hover {

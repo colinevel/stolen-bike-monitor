@@ -1,5 +1,6 @@
 .App {
   text-align: center;
-  margin: 4vh 6vw;
+  padding: 4vh 6vw;
+  box-sizing: border-box; 
 }
 
